@@ -8,19 +8,19 @@ import serial
 
 state = 0
 packet =''
-
+available = " "
 
 def list_serial_ports():
-	if os.name == 'posix' :
-		available = ""
-		for i in range(256):
-			try:
-				s = serial.Serial(i)
-				available += str(i+1)+"   "
-				s.close()
-			except serial.SerialException:
-				pass
-		return available
+    global availalbe 
+    if os.name == 'posix' :
+        for i in range(256):
+            try:
+                s = serial.Serial(i)
+                available += str(i+1)+"   "
+                s.close()
+            except serial.SerialException:
+                pass
+    return available
 
 def bigEndian(s):
 	res = 0
@@ -44,60 +44,55 @@ def littleEndian(s):
 
 def sese(s):
 
-	head = s[:20]
-	type = s[20:24]
-	
-	serialID = s[24:36]
-	nodeID = s[36:40]
-	seq = s[40:44]
-	
-	if type == "0064" : # TH
-		temperature = bigEndian( s[48:52] )
-		humidity = bigEndian( s[52:56] )
-		light = bigEndian( s[56:60] )
-		
-		v1 = -39.6 + 0.01 * temperature
-		tmp = -4 + 0.0405 * humidity + (-0.0000028) * humidity * humidity
-		v2 = (v1 - 25) * (0.01 + 0.00008 * humidity) + tmp
-		tmp = (light * 100) / 75
-		v3 = tmp * 10
-		
-		t = int(time.time())
-		print "gyu_RC1_thl.temperature %d %f nodeid=%d" % ( t, v1, bigEndian( nodeID ) )
-		print "gyu_RC1_thl.huumidity %d %f nodeid=%d" % ( t, v2, bigEndian( nodeID ) )
-		print "gyu_RC1_thl.light %d %f nodeid=%d" % ( t, v3, bigEndian( nodeID ) )
-		print ""
-		
-	elif type == "0070" : # TH
-		temperature = bigEndian( s[48:52] )
-		humidity = bigEndian( s[52:56] )
-		light = bigEndian( s[56:60] )
+    head = s[:20]
+    type = s[20:24]
+        
+    serialID = s[24:36]
+    nodeID = s[36:40]
+    seq = s[40:44]
+        
+    if type == "0064" : # TH
+        temperature = bigEndian( s[48:52] ) 
+        humidity = bigEndian( s[52:56] ) 
+        light = bigEndian( s[56:60] ) 
+        v1 = -39.6 + 0.01 * temperature 
+        tmp = -4 + 0.0405 * humidity + (-0.0000028) * humidity * humidity 
+        v2 = (v1 - 25) * (0.01 + 0.00008 * humidity) + tmp 
+        tmp = (light * 100) / 75 
+        v3 = tmp * 10 
+        t = int(time.time()) 
+        print "gyu_RC1_thl.temperature %d %f nodeid=%d" % ( t, v1, bigEndian( nodeID ) ) 
+        print "gyu_RC1_thl.huumidity %d %f nodeid=%d" % ( t, v2, bigEndian( nodeID ) ) 
+        print "gyu_RC1_thl.light %d %f nodeid=%d" % ( t, v3, bigEndian( nodeID ) ) 
 
-		v1 = -46.85 + 0.01 * temperature
-		tmp = -6 + 125 * humidity / 4095
-		v2 = tmp
-		tmp = (light * 1.017)
-		v3 = tmp
+    elif type == "0070" : # TH 
+        temperature = bigEndian( s[48:52] ) 
+        humidity = bigEndian( s[52:56] )
+        light = bigEndian( s[56:60] )
+        v1 = -46.85 + 0.01 * temperature
+        tmp = -6 + 125 * humidity / 4095
+        v2 = tmp
+        tmp = (light * 1.017)
+        v3 = tmp
 
-		t = int(time.time())
-		print "gyu_RC1_thl.temperature %d %f nodeid=%d" % ( t, v1, bigEndian( nodeID ) )
-		print "gyu_RC1_thl.humidity %d %f nodeid=%d" % ( t, v2, bigEndian( nodeID ) )
-		print "gyu_RC1_thl.light %d %f nodeid=%d" % ( t, v3, bigEndian( nodeID ) )
-		print ""
+        t = int(time.time())
+        print "gyu_RC1_thl.temperature %d %f nodeid=%d" % ( t, v1, bigEndian( nodeID ) )
+        print "gyu_RC1_thl.humidity %d %f nodeid=%d" % ( t, v2, bigEndian( nodeID ) )
+        print "gyu_RC1_thl.light %d %f nodeid=%d" % ( t, v3, bigEndian( nodeID ) )
 
-	elif type == "0065":
-		pass
-	elif type == "0066":
-		ppm = s[48:52]
+    elif type == "0065":
+        pass
+    elif type == "0066":
+        ppm = s[48:52]
 
-		t = int(time.time())
-		tmp = float(bigEndian(ppm))
-		value = float(1.5*(tmp/4086)*2*1000)
+        t = int(time.time())
+        tmp = float(bigEndian(ppm))
+        value = float(1.5*(tmp/4086)*2*1000)
 
-		print "gyu_RC1_co2.ppm %d %f nodeid=%d" % (t, value, bigEndian(nodeID))
-		print ""
+        print "gyu_RC1_co2.ppm %d %f nodeid=%d" % (t, value, bigEndian(nodeID))
+        print ""
 
-	elif type == "006D" or type == "006d":  #Splug
+    elif type == "006D" or type == "006d":  #Splug
 
 		rawData = s[54:60]
 		tmp = bigEndian(rawData)
@@ -111,7 +106,7 @@ def sese(s):
 		print "gyu_RC1_splug.watt %d %f nodeid=%d" % (t, watt, bigEndian(nodeID))
 		print ""
 
-	elif type == "0072": #Splug2
+    elif type == "0072": #Splug2
 		rawData = s[54:60]
 		tmp = bigEndian(rawData)
 		if tmp > 15728640:
@@ -124,7 +119,7 @@ def sese(s):
 		print "gyu_RC1_splug.watt %d %f nodeid=%d" % (t, watt, bigEndian(nodeID))
 		print ""
 			
-	elif type == "00D3" or type == "00d3":       #etype
+    elif type == "00D3" or type == "00d3":       #etype
 		#if len(s) < 72:
 		#	print >> sys.stderr, "ignore too short data for etype:" + s
 		#	continue
@@ -145,7 +140,7 @@ def sese(s):
 			print "gyu_RC1_etype.t_current %d %d nodeid=%d" % (t, t_current, nodeID)
 			print "gyu_RC1_etype.current %d %f nodeid=%d" % (t, current, nodeID)
 			
-	elif type == "0071":
+    elif type == "0071":
 		ppm = s[48:52]
 
 		t = int(time.time())
@@ -154,7 +149,7 @@ def sese(s):
 		print "gyu_RC1_co2.ppm %d %f nodeid=%d" % (t, value, bigEndian(nodeID))
 		print ""
 
-	elif type == "0063":  # base
+    elif type == "0063":  # base
 		recv = bigEndian(s[48:52])
 		send = bigEndian(s[52:56])
 
@@ -162,8 +157,9 @@ def sese(s):
 		print "gyu_RC1_base.recv %d %f nodeid=%d" % (t, recv, bigEndian(nodeID))
 		print "gyu_RC1_base.send %d %f nodeid=%d" % (t, send, bigEndian(nodeID))
 		print ""
+		print ""
 
-	else:
+    else:
 		print >> sys.stderr, "Invalid type : " + type
 		pass
 			
