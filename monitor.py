@@ -45,17 +45,17 @@ while True:
 		if t > time.time() - 30:
 			dt = time.time() - t 
 			#print 'plug %d operate correctly. (%.1f seconds ago, %f watt)' % (plug_id, dt, v)
-			GPIO.out(19, True)
-			GPIO.out(26, False)
+			GPIO.output(19, True)
+			GPIO.output(26, False)
 
 		else:
 			#print 'plug %d may be not connected to server. (%.1f seconds ago, %f watt)' % (plug_id, dt, v)
-			GPIO.out(19, True)
-			GPIO.out(26, False)
+			GPIO.output(19, True)
+			GPIO.output(26, False)
 
 	else:
 		#print 'plug %d does not exists on server!' % plug_id
-		GPIO.out(19, False)
-		GPIO.out(26, True)
+		GPIO.output(19, False)
+		GPIO.output(26, True)
 
 	time.sleep(3.0)
