@@ -37,7 +37,7 @@ def query_last_data_point(plug_id):
 
 
 # test
-plug_id = 900101
+plug_id = 100101
 while True:
 	ret = query_last_data_point(plug_id)
 	if ret is not None:
@@ -58,4 +58,4 @@ while True:
 		GPIO.output(19, False)
 		GPIO.output(26, True)
 
-	time.sleep(3.0)
+	time.sleep(5.0)
