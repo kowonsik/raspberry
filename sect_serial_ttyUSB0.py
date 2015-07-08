@@ -80,8 +80,8 @@ def sese(s):
         
 
         t = int(time.time())
-        print "gyu_RC1_thl.temperature %d %f nodeid=%d" % ( t, v1, bigEndian( nodeID ) )
-        print "gyu_RC1_thl.humidity %d %f nodeid=%d" % ( t, v2, bigEndian( nodeID ) )
+        print "gyu_RC1_thl.temperature %d %.6f nodeid=%d" % ( t, v1, bigEndian( nodeID ) )
+        print "gyu_RC1_thl.humidity %d %.6f nodeid=%d" % ( t, v2, bigEndian( nodeID ) )
         print "gyu_RC1_thl.light %d %f nodeid=%d" % ( t, v3, bigEndian( nodeID ) )
 
     elif type == "0065":
