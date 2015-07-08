@@ -65,7 +65,7 @@ def sese(s):
         print "gyu_RC1_thl.huumidity %d %f nodeid=%d" % ( t, v2, bigEndian( nodeID ) ) 
         print "gyu_RC1_thl.light %d %f nodeid=%d" % ( t, v3, bigEndian( nodeID ) ) 
 
-    elif type == "0070" : # TH 
+    elif type == "0070" : # TH : Total Sensor
         temperature = bigEndian( s[48:52] ) 
         humidity = bigEndian( s[52:56] )
         light = bigEndian( s[56:60] )
