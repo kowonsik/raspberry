@@ -19,6 +19,7 @@ git commit -m "메세지"
 
 
 -----
-origin url 설정이 잘 못되서 origin을 삭제해야할 경우
+origin url 설정이 잘못되서 origin을 삭제(수정)해야할 경우
 
-git remove origin
+git remote remove origin
+git remote rename origin origin_re
