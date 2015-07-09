@@ -22,4 +22,5 @@ git commit -m "메세지"
 origin url 설정이 잘못되서 origin을 삭제(수정)해야할 경우
 
 git remote remove origin
+
 git remote rename origin origin_re
