@@ -4,6 +4,7 @@ sudo apt-get install git
 mkdir ~/workspace
 
 cd ~/workspace
+
 git init
 
 git config --global user.name [유저이름]
