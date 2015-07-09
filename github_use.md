@@ -16,3 +16,9 @@ git push -u origin master
 git add [생성한파일]
 
 git commit -m "메세지"
+
+
+-----
+origin url 설정이 잘 못되서 origin을 삭제해야할 경우
+
+git remove origin
