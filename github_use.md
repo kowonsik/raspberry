@@ -1,3 +1,8 @@
+github desktop
+
+https://desktop.github.com/
+
+----
 
 sudo apt-get install git
 
