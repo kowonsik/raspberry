@@ -17,17 +17,15 @@ git config --global user.email [이메일주소]
 
 git remote add origin https://github.com/kowonsik/raspberry.git
 
-git pull -u origin master
+git pull -u origin master   # 파일 다운로드
 
 git add [생성한파일]
 
 git commit -m "메세지"
 
-git push -u origin master
+git push -u origin master   # 파일 업데이트
 
 
------
-code update 시에는
 -----
 origin url 설정이 잘못되서 origin을 삭제(수정)해야할 경우
 
